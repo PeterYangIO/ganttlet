@@ -1,0 +1,93 @@
+{
+    "users": {
+        "_username1": {
+            "fname": "_fname1",
+            "lname": "_lname1",
+            "email": "_email1",
+            "password": "_hashedPassword",
+            "teams": {
+                "_teamname1": {
+                    "position": "manager"
+                }
+            },
+            "settings": {
+                "theme": "dark"
+            }
+        },
+        "_username2": {
+            "fname": "_fname2",
+            "lname": "_lname2",
+            "email": "_email2",
+            "password": "_hashedPassword",
+            "teams": {
+                "_teamname1": {
+                    "position": "manager"
+                }
+            },
+            "settings": {
+                "theme": "dark"
+            }
+        },
+        "_username3": {
+            "fname": "_fname2",
+            "lname": "_lname2",
+            "email": "_email2",
+            "password": "_hashedPassword",
+            "teams": {
+                "_teamname1": {
+                    "position": "manager"
+                }
+            },
+            "settings": {
+                "theme": "dark"
+            }
+        },
+        "_username4": {
+            "fname": "_fname2",
+            "lname": "_lname2",
+            "email": "_email2",
+            "password": "_hashedPassword",
+            "teams": {
+                "_teamname1": {
+                    "position": "manager"
+                }
+            },
+            "settings": {
+                "theme": "dark"
+            }
+        }
+    },
+    "teams": {
+        "_teamname1": {
+            "managers": {
+                "_username1": true,
+                "_username2": true
+            },
+            "members": {
+                "_username3": true,
+                "_username4": true
+            },
+            "projects": {
+                "_projname1": {
+                    "description": "_description1",
+                    "managers": {
+                        "_username1": true
+                    },
+                    "members": {
+                        "_username3": true,
+                        "_username4": true
+                    },
+                    "table": {
+                        "_firebase_gen_id": {
+                            "id": "_id",
+                            "taskname": "_taskname",
+                            "duration": "_duration",
+                            "startdate": "_startdate",
+                            "enddate": "_enddate"
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
