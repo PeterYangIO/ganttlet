@@ -13,7 +13,7 @@ const config = {
     measurementId: 'G-WH23WGKNYZ',
 };
 
-class Firebase {
+class FirebaseWrapper {
     auth: app.auth.Auth;
     db: app.database.Database;
     constructor() {
@@ -22,33 +22,48 @@ class Firebase {
         this.db = app.database();
     }
 
+    /* Auth API */
+
+    isLoggedIn(): boolean {
+        return this.auth.currentUser != null;
+    }
+
+    createUserWithEmailAndPassword(email: string, password: string): void {
+        this.auth.createUserWithEmailAndPassword(email, password);
+    }
+
+    signInWithEmailAndPassword(email: string, password: string): void {
+        this.auth.signInWithEmailAndPassword(email, password);
+    }
+
+    signOut(): void {
+        this.auth.signOut();
+    }
+
+    resetPassword(email: string): void {
+        this.auth.sendPasswordResetEmail(email);
+    }
+
+    // Kinda redundant, but TS complains if I use the isLoggedIn function
+    updatePassword(password: string): void {
+        if (this.auth.currentUser) {
+            this.auth.currentUser.updatePassword(password);
+        }
+    }
+
+    /* -------- */
+
+    /* Database Operations API */
+
+    // I'm not too sure of the exact mechanics behind what the return type of an async func should be
+    // but simply wrapping the type in a Promise seems to make the TS 'compiler' happy.
     async test(): Promise<void> {
         const data = await (await this.db.ref('/').once('value')).val();
         console.log(data);
     }
 
-    /* Auth API */
-
-    doCreateUserWithEmailAndPassword = (email: string, password: string): Promise<app.auth.UserCredential> =>
-        this.auth.createUserWithEmailAndPassword(email, password);
-
-    doSignInWithEmailAndPassword = (email: string, password: string): Promise<app.auth.UserCredential> =>
-        this.auth.signInWithEmailAndPassword(email, password);
-
-    doSignOut = (): Promise<void> => this.auth.signOut();
-
-    doPasswordReset = (email: string): Promise<void> => this.auth.sendPasswordResetEmail(email);
-
-    // https://stackoverflow.com/questions/58496176/how-to-properly-annotate-object-to-fix-object-is-possibly-null
-    doPasswordUpdate = (password: string): Promise<void> =>
-        this.auth.currentUser ? this.auth.currentUser.updatePassword(password) : Promise.resolve();
-
-    /* -------- */
-
-    /* Auth API */
-
     /* -------- */
 }
 
-const firebase = new Firebase();
+const firebase = new FirebaseWrapper();
 export default firebase;
