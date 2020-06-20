@@ -1,8 +1,10 @@
 import React from 'react';
 import logo from './logo.svg';
 import './App.css';
+import firebase from './components/Firebase/firebase';
 
 function App(): JSX.Element {
+    firebase.test();
     return (
         <div className="App">
             <header className="App-header">

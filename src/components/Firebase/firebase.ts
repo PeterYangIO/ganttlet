@@ -22,6 +22,11 @@ class Firebase {
         this.db = app.database();
     }
 
+    async test(): Promise<void> {
+        const data = await (await this.db.ref('/').once('value')).val();
+        console.log(data);
+    }
+
     /* Auth API */
 
     doCreateUserWithEmailAndPassword = (email: string, password: string): Promise<app.auth.UserCredential> =>
@@ -45,4 +50,5 @@ class Firebase {
     /* -------- */
 }
 
-export default Firebase;
+const firebase = new Firebase();
+export default firebase;
