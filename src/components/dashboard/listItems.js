@@ -9,42 +9,42 @@ import BarChartIcon from '@material-ui/icons/BarChart';
 import AssignmentIcon from '@material-ui/icons/Assignment';
 
 export const mainListItems = (
-  <div>
-    <ListItem button>
-      <ListItemIcon>
-        <DashboardIcon />
-      </ListItemIcon>
-      <ListItemText primary="Dashboard" />
-    </ListItem>
-    <ListItem button>
-      <ListItemIcon>
-        <PeopleIcon />
-      </ListItemIcon>
-      <ListItemText primary="Members" />
-    </ListItem>
-    <ListItem button>
-      <ListItemIcon>
-        <BarChartIcon />
-      </ListItemIcon>
-      <ListItemText primary="Reports" />
-    </ListItem>
-  </div>
+    <div>
+        <ListItem button>
+            <ListItemIcon>
+                <DashboardIcon />
+            </ListItemIcon>
+            <ListItemText primary="Dashboard" />
+        </ListItem>
+        <ListItem button>
+            <ListItemIcon>
+                <PeopleIcon />
+            </ListItemIcon>
+            <ListItemText primary="Members" />
+        </ListItem>
+        <ListItem button>
+            <ListItemIcon>
+                <BarChartIcon />
+            </ListItemIcon>
+            <ListItemText primary="Reports" />
+        </ListItem>
+    </div>
 );
 
 export const secondaryListItems = (
-  <div>
-    <ListSubheader inset>Saved Ganttlets</ListSubheader>
-    <ListItem button>
-      <ListItemIcon>
-        <AssignmentIcon />
-      </ListItemIcon>
-      <ListItemText primary="Current month" />
-    </ListItem>
-    <ListItem button>
-      <ListItemIcon>
-        <AssignmentIcon />
-      </ListItemIcon>
-      <ListItemText primary="Last quarter" />
-    </ListItem>
-  </div>
+    <div>
+        <ListSubheader inset>Saved Ganttlets</ListSubheader>
+        <ListItem button>
+            <ListItemIcon>
+                <AssignmentIcon />
+            </ListItemIcon>
+            <ListItemText primary="Current month" />
+        </ListItem>
+        <ListItem button>
+            <ListItemIcon>
+                <AssignmentIcon />
+            </ListItemIcon>
+            <ListItemText primary="Last quarter" />
+        </ListItem>
+    </div>
 );
