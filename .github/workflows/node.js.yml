@@ -16,7 +16,7 @@ jobs:
 
         strategy:
             matrix:
-                node-version: [10.x, 12.x, 14.x]
+                node-version: [12.x]
 
         steps:
             - uses: actions/checkout@v2
@@ -26,8 +26,6 @@ jobs:
                   node-version: ${{ matrix.node-version }}
             - name: testing install
               run: npm ci
-            - name: testing start
-              run: npm start
             - name: testing build
               run: npm run build --if-present
             - name: testing test
