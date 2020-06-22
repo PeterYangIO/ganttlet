@@ -1,7 +1,8 @@
 import React, { memo } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
-import { AppBar, Toolbar, Typography, Button, Hidden, IconButton, withStyles } from '@material-ui/core';
+import { AppBar, Toolbar, Typography, Button, Hidden, IconButton } from '@material-ui/core';
+import { withStyles, WithStyles, createStyles, Theme } from '@material-ui/core/styles';
 import MenuIcon from '@material-ui/icons/Menu';
 import HomeIcon from '@material-ui/icons/Home';
 import LoginIcon from '@material-ui/icons/ExitToApp';
@@ -9,29 +10,39 @@ import RegisterIcon from '@material-ui/icons/ExitToApp';
 import NavigationDrawer from '../shared/NavigationDrawer';
 import { createGenerateClassName } from '@material-ui/core';
 
-const styles = (theme) => ({
-    appBar: {
-        boxShadow: theme.shadows[6],
-        backgroundColor: theme.palette.common.white,
-    },
-    toolbar: {
-        display: 'flex',
-        justifyContent: 'space-between',
-    },
-    menuButtonText: {
-        fontSize: theme.typography.body1.fontSize,
-        fontWeight: theme.typography.h6.fontWeight,
-    },
-    brandText: {
-        fontFamily: "'Baloo Bhaijaan', cursive",
-        fontWeight: 400,
-    },
-    noDecoration: {
-        textDecoration: 'none !important',
-    },
-});
+const styles = (theme: Theme) =>
+    createStyles({
+        appBar: {
+            boxShadow: theme.shadows[6],
+            backgroundColor: theme.palette.common.white,
+        },
+        toolbar: {
+            display: 'flex',
+            justifyContent: 'space-between',
+        },
+        menuButtonText: {
+            fontSize: theme.typography.body1.fontSize,
+            fontWeight: theme.typography.h6.fontWeight,
+        },
+        brandText: {
+            fontFamily: "'Baloo Bhaijaan', cursive",
+            fontWeight: 400,
+        },
+        noDecoration: {
+            textDecoration: 'none !important',
+        },
+    });
 
-function NavBar(props) {
+interface Props extends WithStyles<typeof styles> {
+    // non style props
+    handleMobileDrawerOpen: { (): void };
+    handleMobileDrawerClose: { (): void };
+    mobileDrawerOpen: boolean;
+    selectedTab: string;
+    selectTab: { (selectedTab: string): void };
+    // injected style props
+}
+function NavBar(props: Props): JSX.Element {
     const { classes, handleMobileDrawerOpen, handleMobileDrawerClose, mobileDrawerOpen, selectedTab } = props;
     const menuItems = [
         {
@@ -51,7 +62,7 @@ function NavBar(props) {
         },
     ];
     return (
-        <div className={classes.root}>
+        <div>
             <AppBar position="fixed" className={classes.appBar}>
                 <Toolbar className={classes.toolbar}>
                     <div>
@@ -64,11 +75,7 @@ function NavBar(props) {
                     </div>
                     <div>
                         <Hidden mdUp>
-                            <IconButton
-                                className={classes.menuButton}
-                                onClick={handleMobileDrawerOpen}
-                                aria-label="Open Navigation"
-                            >
+                            <IconButton onClick={handleMobileDrawerOpen} aria-label="Open Navigation">
                                 <MenuIcon color="primary" />
                             </IconButton>
                         </Hidden>
@@ -105,14 +112,4 @@ function NavBar(props) {
         </div>
     );
 }
-
-NavBar.propTypes = {
-    classes: PropTypes.object.isRequired,
-    handleMobileDrawerOpen: PropTypes.func,
-    handleMobileDrawerClose: PropTypes.func,
-    mobileDrawerOpen: PropTypes.bool,
-    selectedTab: PropTypes.string,
-    selectTab: PropTypes.func,
-};
-
 export default withStyles(styles, { withTheme: true })(memo(NavBar));

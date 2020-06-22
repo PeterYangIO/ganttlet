@@ -1,21 +1,13 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, memo } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
-import {
-    Grid,
-    Typography,
-    Card,
-    Button,
-    Hidden,
-    Box,
-    withStyles,
-    withWidth,
-    isWidthUp,
-    createStyles,
-} from '@material-ui/core';
+import { Grid, Typography, Card, Button, Hidden, Box, withWidth, isWidthUp } from '@material-ui/core';
+import { withStyles, WithStyles, createStyles, Theme } from '@material-ui/core/styles';
+
 import WaveBorder from '../../utils/components/WaveBorder';
 import headerImage from '../../assets/images/headerImage.jpg';
-const styles = (theme) =>
+
+const styles = (theme: Theme) =>
     createStyles({
         extraLargeButtonLabel: {
             fontSize: theme.typography.body1.fontSize,
@@ -98,8 +90,13 @@ const styles = (theme) =>
             paddingTop: theme.spacing(4),
         },
     });
-
-function HeadSection(props) {
+interface Props extends WithStyles<typeof styles> {
+    // non style props
+    theme: Theme;
+    width: 'xs' | 'sm' | 'md' | 'lg' | 'xl';
+    // injected style props
+}
+function HeadSection(props: Props): JSX.Element {
     const { classes, theme, width } = props;
     return (
         <Fragment>
@@ -165,10 +162,4 @@ function HeadSection(props) {
     );
 }
 
-HeadSection.propTypes = {
-    classes: PropTypes.object,
-    width: PropTypes.string,
-    theme: PropTypes.object,
-};
-
-export default withWidth()(withStyles(styles, { withTheme: true })(HeadSection));
+export default withWidth()(withStyles(styles, { withTheme: true })(memo(HeadSection)));

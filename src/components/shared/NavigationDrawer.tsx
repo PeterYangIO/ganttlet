@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, memo } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import {
@@ -7,32 +7,49 @@ import {
     ListItemIcon,
     ListItemText,
     Drawer,
-    withStyles,
     IconButton,
     Typography,
-    withWidth,
     isWidthUp,
     Toolbar,
+    withWidth,
 } from '@material-ui/core';
+import { withStyles, WithStyles, createStyles, Theme } from '@material-ui/core/styles';
 import CloseIcon from '@material-ui/icons/Close';
 
-const styles = (theme) => ({
-    closeIcon: {
-        marginRight: theme.spacing(0.5),
-    },
-    headSection: {
-        width: 200,
-    },
-    blackList: {
-        backgroundColor: theme.palette.common.black,
-        height: '100%',
-    },
-    noDecoration: {
-        textDecoration: 'none !important',
-    },
-});
+const styles = (theme: Theme) =>
+    createStyles({
+        closeIcon: {
+            marginRight: theme.spacing(0.5),
+        },
+        headSection: {
+            width: 200,
+        },
+        blackList: {
+            backgroundColor: theme.palette.common.black,
+            height: '100%',
+        },
+        noDecoration: {
+            textDecoration: 'none !important',
+        },
+    });
+interface IMenuItem {
+    link: string;
+    name: string;
+    icon: React.ReactNode;
+}
+interface Props extends WithStyles<typeof styles> {
+    // non style props
+    anchor: 'bottom' | 'left' | 'right' | 'top';
+    open: boolean;
+    onClose: { (): void };
+    menuItems: IMenuItem[];
+    width: 'xs' | 'sm' | 'md' | 'lg' | 'xl';
+    selectedItem: string;
+    theme: Theme;
 
-function NavigationDrawer(props) {
+    // injected style props
+}
+function NavigationDrawer(props: Props): JSX.Element {
     const { width, open, onClose, anchor, classes, menuItems, selectedItem, theme } = props;
 
     useEffect(() => {
@@ -95,7 +112,7 @@ function NavigationDrawer(props) {
                         );
                     }
                     return (
-                        <ListItem button key={element.name} onClick={element.onClick}>
+                        <ListItem button key={element.name}>
                             <ListItemIcon>{element.icon}</ListItemIcon>
                             <ListItemText
                                 primary={
@@ -112,15 +129,4 @@ function NavigationDrawer(props) {
     );
 }
 
-NavigationDrawer.propTypes = {
-    anchor: PropTypes.string.isRequired,
-    theme: PropTypes.object.isRequired,
-    open: PropTypes.bool.isRequired,
-    onClose: PropTypes.func.isRequired,
-    menuItems: PropTypes.arrayOf(PropTypes.object).isRequired,
-    classes: PropTypes.object.isRequired,
-    width: PropTypes.string.isRequired,
-    selectedItem: PropTypes.string,
-};
-
-export default withWidth()(withStyles(styles, { withTheme: true })(NavigationDrawer));
+export default withWidth()(withStyles(styles, { withTheme: true })(memo(NavigationDrawer)));
