@@ -1,5 +1,4 @@
 import React, { memo } from 'react';
-import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { AppBar, Toolbar, Typography, Button, Hidden, IconButton } from '@material-ui/core';
 import { withStyles, WithStyles, createStyles, Theme } from '@material-ui/core/styles';
@@ -8,7 +7,6 @@ import HomeIcon from '@material-ui/icons/Home';
 import LoginIcon from '@material-ui/icons/ExitToApp';
 import RegisterIcon from '@material-ui/icons/ExitToApp';
 import NavigationDrawer from '../shared/NavigationDrawer';
-import { createGenerateClassName } from '@material-ui/core';
 
 const styles = (theme: Theme) =>
     createStyles({
