@@ -31,7 +31,7 @@ interface Props extends WithStyles<typeof styles> {
 
 function App(props: Props): JSX.Element {
     firebase.test();
-
+  
     const { classes } = props;
     const [selectedTab, setSelectedTab] = useState('');
     const [isMobileDrawerOpen, setIsMobileDrawerOpen] = useState(false);
