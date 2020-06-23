@@ -4,29 +4,29 @@
 name: Node.js CI
 
 on:
-  push:
-    branches: [master]
-  pull_request:
-    branches: [ '*', '!master' ]
+    push:
+        branches: master
+    pull_request:
+        branches: ['*', '!master']
 
 jobs:
-  build:
-    name: Running Unit Tests
-    runs-on: ubuntu-latest
+    build:
+        name: Running Unit Tests
+        runs-on: ubuntu-latest
 
-    strategy:
-      matrix:
-        node-version: [10.x, 12.x, 14.x]
+        strategy:
+            matrix:
+                node-version: [12.x]
 
-    steps:
-    - uses: actions/checkout@v2
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v1
-      with:
-        node-version: ${{ matrix.node-version }}
-    - name: testing install 
-    - run: npm ci
-    - name : testing build
-    - run: npm run build --if-present
-    - name : testing test
-    - run: npm test
+        steps:
+            - uses: actions/checkout@v2
+            - name: Use Node.js ${{ matrix.node-version }}
+              uses: actions/setup-node@v1
+              with:
+                  node-version: ${{ matrix.node-version }}
+            - name: testing install
+              run: npm ci
+            - name: testing build
+              run: npm run build --if-present
+            - name: testing test
+              run: npm test --if-present
