@@ -1,4 +1,6 @@
 import React from 'react';
+import { useForm } from 'react-hook-form';
+
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -12,6 +14,8 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
+
+import firebase from '../Firebase/firebase';
 
 function Copyright() {
     return (
@@ -49,9 +53,19 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default function Register() {
-    const classes = useStyles();
+type RegisterFormObject = {
+    firstName: string;
+    lastName: string;
+    email: string;
+    password: string;
+};
 
+export default function Register(): JSX.Element {
+    const classes = useStyles();
+    const { register, handleSubmit } = useForm<RegisterFormObject>();
+    const onSubmit = (data: RegisterFormObject) => {
+        firebase.createUserWithEmailAndPassword(data.email, data.password);
+    };
     return (
         <Container component="main" maxWidth="xs" className={classes.container}>
             <CssBaseline />
@@ -62,7 +76,7 @@ export default function Register() {
                 <Typography component="h1" variant="h5">
                     Sign up
                 </Typography>
-                <form className={classes.form} noValidate>
+                <form onSubmit={handleSubmit(onSubmit)} className={classes.form} noValidate>
                     <Grid container spacing={2}>
                         <Grid item xs={12} sm={6}>
                             <TextField
@@ -74,6 +88,7 @@ export default function Register() {
                                 id="firstName"
                                 label="First Name"
                                 autoFocus
+                                inputRef={register}
                             />
                         </Grid>
                         <Grid item xs={12} sm={6}>
@@ -85,6 +100,7 @@ export default function Register() {
                                 label="Last Name"
                                 name="lastName"
                                 autoComplete="lname"
+                                inputRef={register}
                             />
                         </Grid>
                         <Grid item xs={12}>
@@ -96,6 +112,7 @@ export default function Register() {
                                 label="Email Address"
                                 name="email"
                                 autoComplete="email"
+                                inputRef={register}
                             />
                         </Grid>
                         <Grid item xs={12}>
@@ -108,6 +125,7 @@ export default function Register() {
                                 type="password"
                                 id="password"
                                 autoComplete="current-password"
+                                inputRef={register}
                             />
                         </Grid>
                         <Grid item xs={12}>
