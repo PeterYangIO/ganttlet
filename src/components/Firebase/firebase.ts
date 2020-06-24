@@ -29,6 +29,7 @@ class FirebaseWrapper {
     }
 
     createUserWithEmailAndPassword(email: string, password: string): void {
+        // Need to add code to save user info in the realtime database as well.
         this.auth.createUserWithEmailAndPassword(email, password);
     }
 
