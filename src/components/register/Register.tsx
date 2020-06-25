@@ -53,18 +53,23 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-type RegisterFormObject = {
+interface RegisterFormObject {
     firstName: string;
     lastName: string;
     email: string;
     password: string;
-};
+}
 
 export default function Register(): JSX.Element {
     const classes = useStyles();
-    const { register, handleSubmit } = useForm<RegisterFormObject>();
+    const { register, handleSubmit, errors } = useForm<RegisterFormObject>();
     const onSubmit = (data: RegisterFormObject) => {
-        firebase.createUserWithEmailAndPassword(data.email, data.password);
+        firebase.createUser(data.email, data.password, data.firstName, data.lastName);
+    };
+
+    // This is redundant, but when I tried to use the FirebaseWrapper member function directly I got an error saying `this` is undefined
+    const emailIsUnique = async (email: string) => {
+        return await !firebase.userAlreadyExists(email);
     };
     return (
         <Container component="main" maxWidth="xs" className={classes.container}>
@@ -88,8 +93,19 @@ export default function Register(): JSX.Element {
                                 id="firstName"
                                 label="First Name"
                                 autoFocus
-                                inputRef={register}
+                                inputRef={register({ required: true, maxLength: 19 })}
                             />
+                            {errors.firstName && errors.firstName.type === 'required' && (
+                                <Typography color="error" className="error">
+                                    Required
+                                </Typography>
+                            )}
+
+                            {errors.firstName && errors.firstName.type === 'maxLength' && (
+                                <Typography color="error" className="error">
+                                    Too Long
+                                </Typography>
+                            )}
                         </Grid>
                         <Grid item xs={12} sm={6}>
                             <TextField
@@ -100,8 +116,19 @@ export default function Register(): JSX.Element {
                                 label="Last Name"
                                 name="lastName"
                                 autoComplete="lname"
-                                inputRef={register}
+                                inputRef={register({ required: true, maxLength: 19 })}
                             />
+                            {errors.lastName && errors.lastName.type === 'required' && (
+                                <Typography color="error" className="error">
+                                    Required
+                                </Typography>
+                            )}
+
+                            {errors.lastName && errors.lastName.type === 'maxLength' && (
+                                <Typography color="error" className="error">
+                                    Too Long
+                                </Typography>
+                            )}
                         </Grid>
                         <Grid item xs={12}>
                             <TextField
@@ -112,8 +139,29 @@ export default function Register(): JSX.Element {
                                 label="Email Address"
                                 name="email"
                                 autoComplete="email"
-                                inputRef={register}
+                                inputRef={register({
+                                    required: true,
+                                    maxLength: 39,
+                                    validate: emailIsUnique,
+                                })}
                             />
+                            {errors.email && errors.email.type === 'required' && (
+                                <Typography color="error" className="error">
+                                    Required
+                                </Typography>
+                            )}
+
+                            {errors.email && errors.email.type === 'maxLength' && (
+                                <Typography color="error" className="error">
+                                    Too Long
+                                </Typography>
+                            )}
+
+                            {errors.email && errors.email.type === 'validate' && (
+                                <Typography color="error" className="error">
+                                    Account Exists
+                                </Typography>
+                            )}
                         </Grid>
                         <Grid item xs={12}>
                             <TextField
@@ -125,8 +173,19 @@ export default function Register(): JSX.Element {
                                 type="password"
                                 id="password"
                                 autoComplete="current-password"
-                                inputRef={register}
+                                inputRef={register({ required: true, minLength: 6 })}
                             />
+                            {errors.password && errors.password.type === 'required' && (
+                                <Typography color="error" className="error">
+                                    Required
+                                </Typography>
+                            )}
+
+                            {errors.password && errors.password.type === 'minLength' && (
+                                <Typography color="error" className="error">
+                                    Too Short
+                                </Typography>
+                            )}
                         </Grid>
                         <Grid item xs={12}>
                             <FormControlLabel

@@ -13,27 +13,59 @@ const config = {
     measurementId: 'G-WH23WGKNYZ',
 };
 
+// Not sure where we could end up using this, but just declaring for now
+// interface IUser {
+//     email: string;
+//     fname: string;
+//     lName: string;
+//     teams: {
+//         teamCount: number;
+//     };
+//     settings: {
+//         theme: string; // Probably change this to an enum or something
+//     };
+// }
+
 class FirebaseWrapper {
     auth: app.auth.Auth;
     db: app.database.Database;
+    loggedIn: boolean;
     constructor() {
         app.initializeApp(config);
         this.auth = app.auth();
         this.db = app.database();
+
+        this.auth.onAuthStateChanged((user) => {
+            if (user) {
+                this.loggedIn = true;
+            } else {
+                this.loggedIn = false;
+            }
+        });
+
+        this.loggedIn = false;
     }
 
     /* Auth API */
 
-    isLoggedIn(): boolean {
-        return this.auth.currentUser != null;
-    }
-
-    createUserWithEmailAndPassword(email: string, password: string): void {
+    createUser(email: string, password: string, firstName: string, lastName: string): void {
         // Need to add code to save user info in the realtime database as well.
+        const dbObject = {
+            email: email,
+            fname: firstName,
+            lName: lastName,
+            teams: {
+                teamCount: 0,
+            },
+            settings: {
+                theme: 'default',
+            },
+        };
+        this.db.ref('/users').push(dbObject);
         this.auth.createUserWithEmailAndPassword(email, password);
     }
 
-    signInWithEmailAndPassword(email: string, password: string): void {
+    signIn(email: string, password: string): void {
         this.auth.signInWithEmailAndPassword(email, password);
     }
 
@@ -56,11 +88,19 @@ class FirebaseWrapper {
 
     /* Database Operations API */
 
-    // I'm not too sure of the exact mechanics behind what the return type of an async func should be
-    // but simply wrapping the type in a Promise seems to make the TS 'compiler' happy.
     async test(): Promise<void> {
         const data = await (await this.db.ref('/').once('value')).val();
         console.log(data);
+    }
+
+    async userAlreadyExists(email: string) {
+        const usersObject = await (await this.db.ref('/users').once('value')).val();
+        for (const key in usersObject) {
+            if (usersObject[key].email === email) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /* -------- */
