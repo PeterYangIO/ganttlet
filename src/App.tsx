@@ -6,6 +6,7 @@ import { BrowserRouter as Router, Switch } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { withStyles, WithStyles, createStyles, Theme } from '@material-ui/core/styles';
 import NavBar from './components/navigation/NavBar';
+import Footer from './components/footer/Footer';
 import Home from './components/home/Home';
 import Login from './components/login/Login';
 import Register from './components/register/Register';
@@ -31,10 +32,12 @@ interface Props extends WithStyles<typeof styles> {
 
 function App(props: Props): JSX.Element {
     firebase.test();
-  
+
     const { classes } = props;
     const [selectedTab, setSelectedTab] = useState('');
     const [isMobileDrawerOpen, setIsMobileDrawerOpen] = useState(false);
+    const [isSideDrawerOpen, setIsSideDrawerOpen] = useState(false);
+    const [isLoggedIn, setIsLoggedIn] = useState(true);
 
     const selectHome = useCallback(() => {
         smoothScrollTop();
@@ -67,6 +70,15 @@ function App(props: Props): JSX.Element {
     const handleMobileDrawerClose = useCallback(() => {
         setIsMobileDrawerOpen(false);
     }, [setIsMobileDrawerOpen]);
+
+    const handleSideDrawerOpen = useCallback(() => {
+        setIsSideDrawerOpen(true);
+    }, [setIsSideDrawerOpen]);
+
+    const handleSideDrawerClose = useCallback(() => {
+        setIsSideDrawerOpen(false);
+    }, [setIsSideDrawerOpen]);
+
     return (
         <Router>
             <MuiThemeProvider theme={theme}>
@@ -80,14 +92,24 @@ function App(props: Props): JSX.Element {
                             mobileDrawerOpen={isMobileDrawerOpen}
                             handleMobileDrawerOpen={handleMobileDrawerOpen}
                             handleMobileDrawerClose={handleMobileDrawerClose}
+                            handleSideDrawerOpen={handleSideDrawerOpen}
+                            handleSideDrawerClose={handleSideDrawerClose}
+                            sideDrawerOpen={isSideDrawerOpen}
+                            loggedIn={isLoggedIn}
+                            setIsLoggedIn={setIsLoggedIn}
                         />
                         <Switch>
                             <PropsRoute path="/dashboard" component={Dashboard} />
                             <PropsRoute path="/login" component={Login} selectLogin={selectLogin} />
                             <PropsRoute path="/register" component={Register} selectRegister={selectRegister} />
                             <PropsRoute path="/profile" component={Profile} selectProfile={selectProfile} />
-                            <PropsRoute path="/" component={Home} selectHome={selectHome} />
+                            {isLoggedIn ? (
+                                <PropsRoute path="/" component={Dashboard} />
+                            ) : (
+                                <PropsRoute path="/" component={Home} selectHome={selectHome} />
+                            )}
                         </Switch>
+                        <Footer />
                     </div>
                 </Suspense>
             </MuiThemeProvider>

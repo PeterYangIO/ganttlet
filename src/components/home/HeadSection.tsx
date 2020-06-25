@@ -89,6 +89,7 @@ const styles = (theme: Theme) =>
             paddingTop: theme.spacing(4),
         },
     });
+
 interface Props extends WithStyles<typeof styles> {
     // non style props
     theme: Theme;

@@ -13,11 +13,12 @@ import IconButton from '@material-ui/core/IconButton';
 import Badge from '@material-ui/core/Badge';
 import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
+import Paper from '@material-ui/core/Paper';
 import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import NotificationsIcon from '@material-ui/icons/Notifications';
-import { mainListItems } from './listItems';
-import Form from './Form';
+import { mainListItems, secondaryListItems } from './listItems';
+import Table from './Table';
 
 function Copyright() {
     return (
@@ -34,10 +35,6 @@ const drawerWidth = 240;
 const useStyles = makeStyles((theme) => ({
     root: {
         display: 'flex',
-    },
-    brandText: {
-        fontFamily: "'Baloo Bhaijaan', cursive",
-        fontWeight: 400,
     },
     toolbar: {
         paddingRight: 24, // keep right padding when drawer closed
@@ -73,26 +70,7 @@ const useStyles = makeStyles((theme) => ({
     title: {
         flexGrow: 1,
     },
-    drawerPaper: {
-        position: 'relative',
-        whiteSpace: 'nowrap',
-        width: drawerWidth,
-        transition: theme.transitions.create('width', {
-            easing: theme.transitions.easing.sharp,
-            duration: theme.transitions.duration.enteringScreen,
-        }),
-    },
-    drawerPaperClose: {
-        overflowX: 'hidden',
-        transition: theme.transitions.create('width', {
-            easing: theme.transitions.easing.sharp,
-            duration: theme.transitions.duration.leavingScreen,
-        }),
-        width: theme.spacing(7),
-        [theme.breakpoints.up('sm')]: {
-            width: theme.spacing(9),
-        },
-    },
+
     appBarSpacer: theme.mixins.toolbar,
     content: {
         flexGrow: 1,
@@ -114,7 +92,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default function Profile() {
+export default function Dashboard() {
     const classes = useStyles();
     const [open, setOpen] = React.useState(true);
     const handleDrawerOpen = () => {
@@ -139,7 +117,7 @@ export default function Profile() {
                         <MenuIcon />
                     </IconButton>
                     <Typography component="h1" variant="h6" color="inherit" noWrap className={classes.title}>
-                        Settings
+                        Dashboard
                     </Typography>
                     <IconButton color="inherit">
                         <Badge badgeContent={4} color="secondary">
@@ -160,23 +138,21 @@ export default function Profile() {
                         <ChevronLeftIcon />
                     </IconButton>
                 </div>
-                <div>
-                    <Typography variant="h4" className={classes.brandText} display="inline" color="primary">
-                        Gantt
-                    </Typography>
-                    <Typography variant="h4" className={classes.brandText} display="inline" color="secondary">
-                        let
-                    </Typography>
-                </div>
                 <Divider />
                 <List>{mainListItems}</List>
+                <Divider />
+                <List>{secondaryListItems}</List>
             </Drawer>
             <main className={classes.content}>
                 <div className={classes.appBarSpacer} />
                 <Container maxWidth="lg" className={classes.container}>
                     <Grid container spacing={3}>
-                        {/* User Profile Goes here */}
-                        <Form />
+                        {/* Schedule Table */}
+                        <Grid item xs={12}>
+                            <Paper className={classes.paper}>
+                                <Table />
+                            </Paper>
+                        </Grid>
                     </Grid>
                     <Box pt={4}>
                         <Copyright />
