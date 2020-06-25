@@ -1,7 +1,8 @@
 import React, { Fragment, memo } from 'react';
-import { Grid, Typography, Card, Button, Hidden, Box, withWidth, isWidthUp } from '@material-ui/core';
-import { withStyles, WithStyles, createStyles, Theme } from '@material-ui/core/styles';
+
+import { Grid, Typography, withWidth, isWidthUp } from '@material-ui/core';
 import BuildIcon from '@material-ui/icons/Build';
+
 import FeatureCard from './FeatureCard';
 
 const iconSize = 30;

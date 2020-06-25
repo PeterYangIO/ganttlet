@@ -1,6 +1,8 @@
-import React, { Fragment, useEffect } from 'react';
+import React, { useEffect } from 'react';
+
 import HeadSection from './HeadSection';
 import FeatureSection from './FeatureSection';
+import Footer from '../footer/Footer';
 
 interface IProps {
     selectHome: { (): void };
@@ -12,10 +14,11 @@ function Home(props: IProps): JSX.Element {
         selectHome();
     }, [selectHome]);
     return (
-        <Fragment>
+        <div>
             <HeadSection />
             <FeatureSection />
-        </Fragment>
+            <Footer />
+        </div>
     );
 }
 

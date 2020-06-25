@@ -1,11 +1,11 @@
 import React, { memo } from 'react';
-import PropTypes from 'prop-types';
-import { Grid, Typography, Box, IconButton, Hidden, withWidth, isWidthUp, TextField } from '@material-ui/core';
+
+import { Grid, Typography, Box, IconButton, withWidth, isWidthUp, TextField } from '@material-ui/core';
 import { withStyles, WithStyles, createStyles, Theme } from '@material-ui/core/styles';
 import MailIcon from '@material-ui/icons/Mail';
-import WaveBorder from '../../utils/components/WaveBorder';
-import transitions from '@material-ui/core/styles/transitions';
 import GitHubIcon from '@material-ui/icons/GitHub';
+
+import WaveBorder from '../../utils/components/WaveBorder';
 
 const styles = (theme: Theme) =>
     createStyles({
@@ -28,16 +28,6 @@ const styles = (theme: Theme) =>
                 paddingBottom: theme.spacing(10),
             },
         },
-        brandText: {
-            fontFamily: "'Baloo Bhaijaan', cursive",
-            fontWeight: 400,
-            color: theme.palette.common.white,
-        },
-        footerLinks: {
-            marginTop: theme.spacing(2.5),
-            marginBot: theme.spacing(1.5),
-            color: theme.palette.common.white,
-        },
         infoIcon: {
             color: `${theme.palette.common.white} !important`,
             backgroundColor: '#33383b !important',
@@ -49,20 +39,6 @@ const styles = (theme: Theme) =>
             '&:hover': {
                 backgroundColor: theme.palette.primary.light,
             },
-        },
-        link: {
-            cursor: 'Pointer',
-            color: theme.palette.common.white,
-            transition: transitions.create(['color'], {
-                duration: theme.transitions.duration.shortest,
-                easing: theme.transitions.easing.easeIn,
-            }),
-            '&:hover': {
-                color: theme.palette.primary.light,
-            },
-        },
-        whiteBg: {
-            backgroundColor: theme.palette.common.white,
         },
     });
 

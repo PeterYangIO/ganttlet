@@ -1,13 +1,15 @@
-import React, { memo, Fragment } from 'react';
+import React, { memo } from 'react';
 import clsx from 'clsx';
-import { Typography } from '@material-ui/core';
+import { Link } from 'react-router-dom';
+
+import { List, ListItem, ListItemIcon, ListItemText, Divider, Drawer, IconButton } from '@material-ui/core';
 import { withStyles, WithStyles, createStyles, Theme } from '@material-ui/core/styles';
-import IconButton from '@material-ui/core/IconButton';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
-import Divider from '@material-ui/core/Divider';
-import List from '@material-ui/core/List';
-import Drawer from '@material-ui/core/Drawer';
-import { mainListItems, secondaryListItems } from './listItems';
+import DashboardIcon from '@material-ui/icons/Dashboard';
+import PeopleIcon from '@material-ui/icons/People';
+import BarChartIcon from '@material-ui/icons/BarChart';
+
+import { secondaryListItems } from './listItems';
 
 const drawerWidth = 240; // if change this value, change in NavBar.tsx too
 
@@ -40,6 +42,9 @@ const styles = (theme: Theme) =>
             padding: '0 8px',
             ...theme.mixins.toolbar,
         },
+        noDecoration: {
+            textDecoration: 'none !important',
+        },
     });
 
 interface Props extends WithStyles<typeof styles> {
@@ -50,6 +55,25 @@ interface Props extends WithStyles<typeof styles> {
 }
 function SideDrawer(props: Props) {
     const { classes, handleSideDrawerClose, sideDrawerOpen } = props;
+
+    const menuItems = [
+        {
+            link: '/',
+            name: 'Dashboard',
+            icon: <DashboardIcon />,
+        },
+        {
+            link: '/members',
+            name: 'Members',
+            icon: <PeopleIcon />,
+        },
+        {
+            link: '/reports',
+            name: 'Reports',
+            icon: <BarChartIcon />,
+        },
+    ];
+
     return (
         <Drawer
             variant="permanent"
@@ -64,7 +88,18 @@ function SideDrawer(props: Props) {
                 </IconButton>
             </div>
             <Divider />
-            <List>{mainListItems}</List>
+            <List>
+                {menuItems.map((element) => {
+                    return (
+                        <Link key={element.name} to={element.link} className={classes.noDecoration}>
+                            <ListItem button>
+                                <ListItemIcon>{element.icon}</ListItemIcon>
+                                <ListItemText primary={element.name} />
+                            </ListItem>
+                        </Link>
+                    );
+                })}
+            </List>
             <Divider />
             <List>{secondaryListItems}</List>
         </Drawer>

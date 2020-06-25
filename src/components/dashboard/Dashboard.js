@@ -1,23 +1,9 @@
 import React from 'react';
-import clsx from 'clsx';
+
+import { Box, Typography, Container, Grid, Paper } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import Drawer from '@material-ui/core/Drawer';
-import Box from '@material-ui/core/Box';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import List from '@material-ui/core/List';
-import Typography from '@material-ui/core/Typography';
-import Divider from '@material-ui/core/Divider';
-import IconButton from '@material-ui/core/IconButton';
-import Badge from '@material-ui/core/Badge';
-import Container from '@material-ui/core/Container';
-import Grid from '@material-ui/core/Grid';
-import Paper from '@material-ui/core/Paper';
-import MenuIcon from '@material-ui/icons/Menu';
-import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
-import NotificationsIcon from '@material-ui/icons/Notifications';
-import { mainListItems, secondaryListItems } from './listItems';
+
+import Footer from '../footer/Footer';
 import Table from './Table';
 
 function Copyright() {
@@ -32,37 +18,14 @@ function Copyright() {
 
 const useStyles = makeStyles((theme) => ({
     appBarSpacer: theme.mixins.toolbar,
-    root: {
-        display: 'flex',
+    container: {
+        paddingTop: theme.spacing(4),
+        paddingBottom: theme.spacing(4),
     },
-    toolbar: {
-        paddingRight: 24, // keep right padding when drawer closed
-    },
-    toolbarIcon: {
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'flex-end',
-        padding: '0 8px',
-        ...theme.mixins.toolbar,
-    },
-    menuButton: {
-        marginRight: 36,
-    },
-    menuButtonHidden: {
-        display: 'none',
-    },
-    title: {
-        flexGrow: 1,
-    },
-
     content: {
         flexGrow: 1,
         height: '100vh',
         overflow: 'auto',
-    },
-    container: {
-        paddingTop: theme.spacing(4),
-        paddingBottom: theme.spacing(4),
     },
     paper: {
         padding: theme.spacing(2),
@@ -70,30 +33,29 @@ const useStyles = makeStyles((theme) => ({
         overflow: 'auto',
         flexDirection: 'column',
     },
-    fixedHeight: {
-        height: 240,
-    },
 }));
 
 export default function Dashboard() {
     const classes = useStyles();
+
     return (
-        <div className={classes.root}>
-            <main className={classes.content}>
-                <Container maxWidth="lg" className={classes.container}>
-                    <Grid container spacing={3}>
-                        {/* Schedule Table */}
-                        <Grid item xs={12}>
-                            <Paper className={classes.paper}>
-                                <Table />
-                            </Paper>
-                        </Grid>
+        <main className={classes.content}>
+            <div className={classes.appBarSpacer} />
+
+            <Container maxWidth="lg" className={classes.container}>
+                <Grid container spacing={3}>
+                    {/* Schedule Table */}
+                    <Grid item xs={12}>
+                        <Paper className={classes.paper}>
+                            <Table />
+                        </Paper>
                     </Grid>
-                    <Box pt={4}>
-                        <Copyright />
-                    </Box>
-                </Container>
-            </main>
-        </div>
+                </Grid>
+                <Box pt={4}>
+                    <Copyright />
+                </Box>
+            </Container>
+            <Footer />
+        </main>
     );
 }

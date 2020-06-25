@@ -1,20 +1,20 @@
 import React, { memo } from 'react';
 import clsx from 'clsx';
 import { Link } from 'react-router-dom';
-import { AppBar, Toolbar, Typography, Button, Hidden, IconButton } from '@material-ui/core';
+
+import { AppBar, Toolbar, Typography, Button, Hidden, IconButton, Badge } from '@material-ui/core';
 import { withStyles, WithStyles, createStyles, Theme } from '@material-ui/core/styles';
 import MenuIcon from '@material-ui/icons/Menu';
 import HomeIcon from '@material-ui/icons/Home';
 import LoginIcon from '@material-ui/icons/ExitToApp';
 import RegisterIcon from '@material-ui/icons/ExitToApp';
-import NavigationDrawer from '../shared/NavigationDrawer';
+import NotificationsIcon from '@material-ui/icons/Notifications';
+import ExitToAppIcon from '@material-ui/icons/ExitToApp';
+import PersonIcon from '@material-ui/icons/Person';
+
+import NavigationDrawer from './NavigationDrawer';
 import SideDrawer from '../navigation/SideDrawer';
 
-import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
-import Divider from '@material-ui/core/Divider';
-import List from '@material-ui/core/List';
-import Drawer from '@material-ui/core/Drawer';
-import { mainListItems, secondaryListItems } from './listItems';
 const drawerWidth = 240; // if change this value, change in SideDrawer.tsx too
 
 const styles = (theme: Theme) =>
@@ -34,9 +34,9 @@ const styles = (theme: Theme) =>
                 duration: theme.transitions.duration.enteringScreen,
             }),
         },
-        toolbar: {
-            display: 'flex',
-            justifyContent: 'space-between',
+        brandText: {
+            fontFamily: "'Baloo Bhaijaan', cursive",
+            fontWeight: 400,
         },
         menuButton: {
             marginRight: 36,
@@ -48,39 +48,12 @@ const styles = (theme: Theme) =>
             fontSize: theme.typography.body1.fontSize,
             fontWeight: theme.typography.h6.fontWeight,
         },
-        brandText: {
-            fontFamily: "'Baloo Bhaijaan', cursive",
-            fontWeight: 400,
-        },
         noDecoration: {
             textDecoration: 'none !important',
         },
-        drawerPaper: {
-            position: 'relative',
-            whiteSpace: 'nowrap',
-            width: drawerWidth,
-            transition: theme.transitions.create('width', {
-                easing: theme.transitions.easing.sharp,
-                duration: theme.transitions.duration.enteringScreen,
-            }),
-        },
-        drawerPaperClose: {
-            overflowX: 'hidden',
-            transition: theme.transitions.create('width', {
-                easing: theme.transitions.easing.sharp,
-                duration: theme.transitions.duration.leavingScreen,
-            }),
-            width: theme.spacing(7),
-            [theme.breakpoints.up('sm')]: {
-                width: theme.spacing(9),
-            },
-        },
-        toolbarIcon: {
+        toolbar: {
             display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'flex-end',
-            padding: '0 8px',
-            ...theme.mixins.toolbar,
+            justifyContent: 'space-between',
         },
     });
 
@@ -111,6 +84,7 @@ function NavBar(props: Props): JSX.Element {
         setIsLoggedIn,
         selectedTab,
     } = props;
+
     const menuItems = [
         {
             link: '/',
@@ -128,12 +102,25 @@ function NavBar(props: Props): JSX.Element {
             icon: <RegisterIcon className="text-white" />,
         },
     ];
+    const handlePersonIconClick = () => {
+        console.log('bzzt bzzt person icon clicked (headed to profile');
+    };
+    const handleNotificationsIconClick = () => {
+        console.log('ding dong notifications bell clicked');
+    };
+    const handleExitIconClick = () => {
+        setIsLoggedIn(false);
+    };
+
     return (
         <div>
-            <AppBar position="absolute" className={clsx(classes.appBar, sideDrawerOpen && classes.appBarShift)}>
+            <AppBar
+                position="absolute"
+                className={clsx(classes.appBar, loggedIn && sideDrawerOpen && classes.appBarShift)}
+            >
                 <Toolbar className={classes.toolbar}>
-                    {loggedIn ? (
-                        <div>
+                    <div>
+                        {loggedIn ? (
                             <IconButton
                                 edge="start"
                                 aria-label="open drawer"
@@ -142,12 +129,10 @@ function NavBar(props: Props): JSX.Element {
                             >
                                 <MenuIcon />
                             </IconButton>
-                        </div>
-                    ) : (
-                        <div></div>
-                    )}
-                    <div>
-                        <Typography variant="h4" className={classes.brandText} display="inline" color="primary">
+                        ) : (
+                            <div></div>
+                        )}
+                        <Typography variant="h4" className={classes.brandText} display="inline">
                             Gantt
                         </Typography>
                         <Typography variant="h4" className={classes.brandText} display="inline" color="secondary">
@@ -155,8 +140,31 @@ function NavBar(props: Props): JSX.Element {
                         </Typography>
                     </div>
                     <div>
+                        <Button onClick={() => setIsLoggedIn(!loggedIn)}> Toggle Logged In</Button>
+                    </div>
+                    <div>
                         {loggedIn ? (
-                            <div>lol user logged in</div>
+                            <div>
+                                <Link key="profile" to="/profile" className={classes.noDecoration}>
+                                    <IconButton color="inherit" onClick={handlePersonIconClick}>
+                                        <PersonIcon />
+                                    </IconButton>
+                                </Link>
+
+                                <Link key="notifications" to="/notifications" className={classes.noDecoration}>
+                                    <IconButton color="inherit" onClick={handleNotificationsIconClick}>
+                                        <Badge badgeContent={4} color="secondary">
+                                            <NotificationsIcon />
+                                        </Badge>
+                                    </IconButton>
+                                </Link>
+
+                                <Link key="logout" to="/logout" className={classes.noDecoration}>
+                                    <IconButton color="inherit" onClick={handleExitIconClick}>
+                                        <ExitToAppIcon />
+                                    </IconButton>
+                                </Link>
+                            </div>
                         ) : (
                             <div>
                                 <Hidden mdUp>

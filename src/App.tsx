@@ -18,6 +18,9 @@ import firebase from './components/Firebase/firebase';
 
 const styles = (theme: Theme) =>
     createStyles({
+        root: {
+            display: 'flex',
+        },
         wrapper: {
             backgroundColor: theme.palette.common.white,
             overflowX: 'hidden',
@@ -63,6 +66,12 @@ function App(props: Props): JSX.Element {
         setSelectedTab('Profile');
     }, [setSelectedTab]);
 
+    const selectDashBoard = useCallback(() => {
+        smoothScrollTop();
+        document.title = 'Dashboard | Ganttlet';
+        setSelectedTab('Dashboard');
+    }, [setSelectedTab]);
+
     const handleMobileDrawerOpen = useCallback(() => {
         setIsMobileDrawerOpen(true);
     }, [setIsMobileDrawerOpen]);
@@ -86,30 +95,30 @@ function App(props: Props): JSX.Element {
                 <GlobalStyles />
                 <Suspense fallback={<Fragment />}>
                     <div className={classes.wrapper}>
-                        <NavBar
-                            selectedTab={selectedTab}
-                            selectTab={setSelectedTab}
-                            mobileDrawerOpen={isMobileDrawerOpen}
-                            handleMobileDrawerOpen={handleMobileDrawerOpen}
-                            handleMobileDrawerClose={handleMobileDrawerClose}
-                            handleSideDrawerOpen={handleSideDrawerOpen}
-                            handleSideDrawerClose={handleSideDrawerClose}
-                            sideDrawerOpen={isSideDrawerOpen}
-                            loggedIn={isLoggedIn}
-                            setIsLoggedIn={setIsLoggedIn}
-                        />
-                        <Switch>
-                            <PropsRoute path="/dashboard" component={Dashboard} />
-                            <PropsRoute path="/login" component={Login} selectLogin={selectLogin} />
-                            <PropsRoute path="/register" component={Register} selectRegister={selectRegister} />
-                            <PropsRoute path="/profile" component={Profile} selectProfile={selectProfile} />
-                            {isLoggedIn ? (
-                                <PropsRoute path="/" component={Dashboard} />
-                            ) : (
-                                <PropsRoute path="/" component={Home} selectHome={selectHome} />
-                            )}
-                        </Switch>
-                        <Footer />
+                        <div className={classes.root}>
+                            <NavBar
+                                selectedTab={selectedTab}
+                                selectTab={setSelectedTab}
+                                mobileDrawerOpen={isMobileDrawerOpen}
+                                handleMobileDrawerOpen={handleMobileDrawerOpen}
+                                handleMobileDrawerClose={handleMobileDrawerClose}
+                                handleSideDrawerOpen={handleSideDrawerOpen}
+                                handleSideDrawerClose={handleSideDrawerClose}
+                                sideDrawerOpen={isSideDrawerOpen}
+                                loggedIn={isLoggedIn}
+                                setIsLoggedIn={setIsLoggedIn}
+                            />
+                            <Switch>
+                                <PropsRoute path="/login" component={Login} selectLogin={selectLogin} />
+                                <PropsRoute path="/register" component={Register} selectRegister={selectRegister} />
+                                <PropsRoute path="/profile" component={Profile} selectProfile={selectProfile} />
+                                {isLoggedIn ? (
+                                    <PropsRoute path="/" component={Dashboard} selectDashboard={selectDashBoard} />
+                                ) : (
+                                    <PropsRoute path="/" component={Home} selectHome={selectHome} />
+                                )}
+                            </Switch>
+                        </div>
                     </div>
                 </Suspense>
             </MuiThemeProvider>
