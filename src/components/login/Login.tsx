@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -12,6 +12,7 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
+import GoogleLogin from 'react-google-login';
 
 function Copyright() {
     return (
@@ -52,6 +53,18 @@ const useStyles = makeStyles((theme) => ({
 export default function Login() {
     const classes = useStyles();
 
+    const [name, setName] = useState('');
+
+    const [email, setEmail] = useState('');
+
+    const [imgUrl, setImgUrl] = useState('');
+
+    const responseGoogle = (response: any) => {
+        setName(response.profileObj.name);
+        setEmail(response.profileObj.email);
+        setImgUrl(response.profileObj.imageUrl);
+    };
+
     return (
         <Container component="main" maxWidth="xs" className={classes.container}>
             <CssBaseline />
@@ -89,6 +102,21 @@ export default function Login() {
                     <Button type="submit" fullWidth variant="contained" color="primary" className={classes.submit}>
                         Sign In
                     </Button>
+
+                    {/* Google Sign-in */}
+                    <GoogleLogin
+                        clientId="899650980216-qmoafq1r4g4l3i517pi0f4p25l4tsaki.apps.googleusercontent.com"
+                        buttonText="Login"
+                        onSuccess={responseGoogle}
+                        onFailure={responseGoogle}
+                        cookiePolicy={'single_host_origin'}
+                    />
+
+                    {/* DEBUGGING PURPOSES: Google Profile will be here */}
+                    <p>{name}</p>
+                    <p>{email}</p>
+                    <img src={imgUrl} alt={name} />
+
                     <Grid container>
                         <Grid item xs>
                             <Link href="#" variant="body2">
