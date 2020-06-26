@@ -16,6 +16,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 
 import firebase from '../Firebase/firebase';
+import ErrorDisplay from '../shared/ErrorDisplay';
 
 function Copyright() {
     return (
@@ -93,19 +94,9 @@ export default function Register(): JSX.Element {
                                 id="firstName"
                                 label="First Name"
                                 autoFocus
-                                inputRef={register({ required: true, maxLength: 19 })}
+                                inputRef={register({ required: true, maxLength: 64 })}
                             />
-                            {errors.firstName && errors.firstName.type === 'required' && (
-                                <Typography color="error" className="error">
-                                    Required
-                                </Typography>
-                            )}
-
-                            {errors.firstName && errors.firstName.type === 'maxLength' && (
-                                <Typography color="error" className="error">
-                                    Too Long
-                                </Typography>
-                            )}
+                            {errors.firstName && <ErrorDisplay type={errors.firstName.type} />}
                         </Grid>
                         <Grid item xs={12} sm={6}>
                             <TextField
@@ -116,19 +107,9 @@ export default function Register(): JSX.Element {
                                 label="Last Name"
                                 name="lastName"
                                 autoComplete="lname"
-                                inputRef={register({ required: true, maxLength: 19 })}
+                                inputRef={register({ required: true, maxLength: 64 })}
                             />
-                            {errors.lastName && errors.lastName.type === 'required' && (
-                                <Typography color="error" className="error">
-                                    Required
-                                </Typography>
-                            )}
-
-                            {errors.lastName && errors.lastName.type === 'maxLength' && (
-                                <Typography color="error" className="error">
-                                    Too Long
-                                </Typography>
-                            )}
+                            {errors.lastName && <ErrorDisplay type={errors.lastName.type} />}
                         </Grid>
                         <Grid item xs={12}>
                             <TextField
@@ -141,27 +122,11 @@ export default function Register(): JSX.Element {
                                 autoComplete="email"
                                 inputRef={register({
                                     required: true,
-                                    maxLength: 39,
+                                    maxLength: 256,
                                     validate: emailIsUnique,
                                 })}
                             />
-                            {errors.email && errors.email.type === 'required' && (
-                                <Typography color="error" className="error">
-                                    Required
-                                </Typography>
-                            )}
-
-                            {errors.email && errors.email.type === 'maxLength' && (
-                                <Typography color="error" className="error">
-                                    Too Long
-                                </Typography>
-                            )}
-
-                            {errors.email && errors.email.type === 'validate' && (
-                                <Typography color="error" className="error">
-                                    Account Exists
-                                </Typography>
-                            )}
+                            {errors.email && <ErrorDisplay type={errors.email.type} />}
                         </Grid>
                         <Grid item xs={12}>
                             <TextField
@@ -173,19 +138,9 @@ export default function Register(): JSX.Element {
                                 type="password"
                                 id="password"
                                 autoComplete="current-password"
-                                inputRef={register({ required: true, minLength: 6 })}
+                                inputRef={register({ required: true, minLength: 12 })}
                             />
-                            {errors.password && errors.password.type === 'required' && (
-                                <Typography color="error" className="error">
-                                    Required
-                                </Typography>
-                            )}
-
-                            {errors.password && errors.password.type === 'minLength' && (
-                                <Typography color="error" className="error">
-                                    Too Short
-                                </Typography>
-                            )}
+                            {errors.password && <ErrorDisplay type={errors.password.type} />}
                         </Grid>
                         <Grid item xs={12}>
                             <FormControlLabel

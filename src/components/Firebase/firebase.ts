@@ -36,11 +36,7 @@ class FirebaseWrapper {
         this.db = app.database();
 
         this.auth.onAuthStateChanged((user) => {
-            if (user) {
-                this.loggedIn = true;
-            } else {
-                this.loggedIn = false;
-            }
+            this.loggedIn = Boolean(user);
         });
 
         this.loggedIn = false;
@@ -94,13 +90,8 @@ class FirebaseWrapper {
     }
 
     async userAlreadyExists(email: string) {
-        const usersObject = await (await this.db.ref('/users').once('value')).val();
-        for (const key in usersObject) {
-            if (usersObject[key].email === email) {
-                return true;
-            }
-        }
-        return false;
+        const userWithEmailSnapshot = await this.db.ref('users').orderByChild('email').equalTo(email).once('value');
+        return userWithEmailSnapshot.exists();
     }
 
     /* -------- */
