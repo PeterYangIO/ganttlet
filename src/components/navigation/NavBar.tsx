@@ -14,8 +14,9 @@ import PersonIcon from '@material-ui/icons/Person';
 
 import NavigationDrawer from './NavigationDrawer';
 import SideDrawer from '../navigation/SideDrawer';
+import * as Constants from '../../config/constants';
 
-const drawerWidth = 240; // if change this value, change in SideDrawer.tsx too
+const drawerWidth = Constants.drawerWidth;
 
 const styles = (theme: Theme) =>
     createStyles({
@@ -59,11 +60,11 @@ const styles = (theme: Theme) =>
 
 interface Props extends WithStyles<typeof styles> {
     // non style props
-    handleMobileDrawerOpen: { (): void };
-    handleMobileDrawerClose: { (): void };
+    handleMobileDrawerOpen: VoidFunction;
+    handleMobileDrawerClose: VoidFunction;
     mobileDrawerOpen: boolean;
-    handleSideDrawerOpen: { (): void };
-    handleSideDrawerClose: { (): void };
+    handleSideDrawerOpen: VoidFunction;
+    handleSideDrawerClose: VoidFunction;
     sideDrawerOpen: boolean;
     loggedIn: boolean;
     setIsLoggedIn: { (isLoggedIn: boolean): void };
@@ -120,7 +121,7 @@ function NavBar(props: Props): JSX.Element {
             >
                 <Toolbar className={classes.toolbar}>
                     <div>
-                        {loggedIn ? (
+                        {loggedIn && (
                             <IconButton
                                 edge="start"
                                 aria-label="open drawer"
@@ -129,8 +130,6 @@ function NavBar(props: Props): JSX.Element {
                             >
                                 <MenuIcon />
                             </IconButton>
-                        ) : (
-                            <div></div>
                         )}
                         <Typography variant="h4" className={classes.brandText} display="inline">
                             Gantt
@@ -197,11 +196,7 @@ function NavBar(props: Props): JSX.Element {
                     </div>
                 </Toolbar>
             </AppBar>
-            {loggedIn ? (
-                <SideDrawer handleSideDrawerClose={handleSideDrawerClose} sideDrawerOpen={sideDrawerOpen} />
-            ) : (
-                <div></div>
-            )}
+            {loggedIn && <SideDrawer handleSideDrawerClose={handleSideDrawerClose} sideDrawerOpen={sideDrawerOpen} />}
             <NavigationDrawer
                 menuItems={menuItems}
                 anchor="right"

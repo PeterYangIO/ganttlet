@@ -10,8 +10,9 @@ import PeopleIcon from '@material-ui/icons/People';
 import BarChartIcon from '@material-ui/icons/BarChart';
 
 import { secondaryListItems } from './listItems';
+import * as Constants from '../../config/constants';
 
-const drawerWidth = 240; // if change this value, change in NavBar.tsx too
+const drawerWidth = Constants.drawerWidth;
 
 const styles = (theme: Theme) =>
     createStyles({
