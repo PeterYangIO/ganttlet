@@ -13,8 +13,6 @@ import Dashboard from './components/dashboard/Dashboard';
 import PropsRoute from './utils/components/PropsRoute';
 import smoothScrollTop from './utils/functions/smoothScrollTop';
 import Profile from './components/profile/Profile';
-import firebase from './components/Firebase/firebase';
-
 const styles = (theme: Theme) =>
     createStyles({
         wrapper: {
@@ -24,14 +22,9 @@ const styles = (theme: Theme) =>
         },
     });
 
-interface Props extends WithStyles<typeof styles> {
-    // non style props
-    // injected style props
-}
+type Props = WithStyles<typeof styles>;
 
 function App(props: Props): JSX.Element {
-    firebase.test();
-  
     const { classes } = props;
     const [selectedTab, setSelectedTab] = useState('');
     const [isMobileDrawerOpen, setIsMobileDrawerOpen] = useState(false);

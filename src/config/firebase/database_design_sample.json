@@ -1,52 +1,9 @@
 {
     "users": {
-        "_username1": {
+        "_firebaseGeneratedUniqueKey": {
             "fname": "_fname1",
             "lname": "_lname1",
             "email": "_email1",
-            "password": "_hashedPassword",
-            "teams": {
-                "_teamname1": {
-                    "position": "manager"
-                }
-            },
-            "settings": {
-                "theme": "dark"
-            }
-        },
-        "_username2": {
-            "fname": "_fname2",
-            "lname": "_lname2",
-            "email": "_email2",
-            "password": "_hashedPassword",
-            "teams": {
-                "_teamname1": {
-                    "position": "manager"
-                }
-            },
-            "settings": {
-                "theme": "dark"
-            }
-        },
-        "_username3": {
-            "fname": "_fname2",
-            "lname": "_lname2",
-            "email": "_email2",
-            "password": "_hashedPassword",
-            "teams": {
-                "_teamname1": {
-                    "position": "manager"
-                }
-            },
-            "settings": {
-                "theme": "dark"
-            }
-        },
-        "_username4": {
-            "fname": "_fname2",
-            "lname": "_lname2",
-            "email": "_email2",
-            "password": "_hashedPassword",
             "teams": {
                 "_teamname1": {
                     "position": "manager"

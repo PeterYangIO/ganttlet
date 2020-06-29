@@ -12,6 +12,7 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
+import firebase from '../Firebase/firebase';
 
 function Copyright() {
     return (
@@ -47,9 +48,21 @@ const useStyles = makeStyles((theme) => ({
     submit: {
         margin: theme.spacing(3, 0, 2),
     },
+    googleBtn: {
+        width: '100%',
+        margin: '0 0 50px 0',
+        display: 'flex',
+        '& img': {
+            width: '16px',
+            height: '16px',
+            padding: 0,
+            margin: '0 5px',
+            'vertical-align': 'middle',
+        },
+    },
 }));
 
-export default function Login() {
+export default function Login(): JSX.Element {
     const classes = useStyles();
 
     return (
@@ -89,6 +102,16 @@ export default function Login() {
                     <Button type="submit" fullWidth variant="contained" color="primary" className={classes.submit}>
                         Sign In
                     </Button>
+
+                    {/*Google Sign in */}
+                    <Button onClick={firebase.googleSignIn} className={classes.googleBtn}>
+                        <img
+                            src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg"
+                            alt="logo"
+                        />
+                        Log In With Google
+                    </Button>
+
                     <Grid container>
                         <Grid item xs>
                             <Link href="#" variant="body2">
