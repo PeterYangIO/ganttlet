@@ -30,6 +30,8 @@ class FirebaseWrapper {
     auth: app.auth.Auth;
     db: app.database.Database;
     loggedIn: boolean;
+    provider: firebase.auth.GoogleAuthProvider;
+
     constructor() {
         app.initializeApp(config);
         this.auth = app.auth();
@@ -40,6 +42,8 @@ class FirebaseWrapper {
         });
 
         this.loggedIn = false;
+
+        this.provider = new app.auth.GoogleAuthProvider();
     }
 
     /* Auth API */
@@ -79,6 +83,22 @@ class FirebaseWrapper {
             this.auth.currentUser.updatePassword(password);
         }
     }
+
+    googleSignIn = () => {
+        this.auth
+            .signInWithPopup(this.provider)
+            .then((result) => {
+                if (result) {
+                    const user = result.user;
+                    console.log(user);
+                    // To-do: handle what happen after (redirect, etc.)
+                }
+            })
+            .catch((error) => {
+                const errorCode = error.code;
+                console.log(errorCode);
+            });
+    };
 
     /* -------- */
 

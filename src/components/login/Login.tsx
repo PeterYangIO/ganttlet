@@ -12,7 +12,7 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
-import * as firebase from 'firebase';
+import firebase from '../Firebase/firebase';
 
 function Copyright() {
     return (
@@ -62,25 +62,6 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-// Handle Google SignIn
-const provider = new firebase.auth.GoogleAuthProvider();
-function googleSignIn() {
-    firebase
-        .auth()
-        .signInWithPopup(provider)
-        .then((result) => {
-            if (result) {
-                const user = result.user;
-                console.log(user);
-                // To-do: handle what happen after (redirect, etc.)
-            }
-        })
-        .catch((error) => {
-            const errorCode = error.code;
-            console.log(errorCode);
-        });
-}
-
 export default function Login(): JSX.Element {
     const classes = useStyles();
 
@@ -123,7 +104,7 @@ export default function Login(): JSX.Element {
                     </Button>
 
                     {/*Google Sign in */}
-                    <Button onClick={googleSignIn} className={classes.googleBtn}>
+                    <Button onClick={firebase.googleSignIn} className={classes.googleBtn}>
                         <img
                             src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg"
                             alt="logo"
