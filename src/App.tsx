@@ -6,6 +6,7 @@ import { BrowserRouter as Router, Switch } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { withStyles, WithStyles, createStyles, Theme } from '@material-ui/core/styles';
 import NavBar from './components/navigation/NavBar';
+import Footer from './components/footer/Footer';
 import Home from './components/home/Home';
 import Login from './components/login/Login';
 import Register from './components/register/Register';
@@ -15,6 +16,9 @@ import smoothScrollTop from './utils/functions/smoothScrollTop';
 import Profile from './components/profile/Profile';
 const styles = (theme: Theme) =>
     createStyles({
+        root: {
+            display: 'flex',
+        },
         wrapper: {
             backgroundColor: theme.palette.common.white,
             overflowX: 'hidden',
@@ -25,9 +29,12 @@ const styles = (theme: Theme) =>
 type Props = WithStyles<typeof styles>;
 
 function App(props: Props): JSX.Element {
+
     const { classes } = props;
     const [selectedTab, setSelectedTab] = useState('');
     const [isMobileDrawerOpen, setIsMobileDrawerOpen] = useState(false);
+    const [isSideDrawerOpen, setIsSideDrawerOpen] = useState(false);
+    const [isLoggedIn, setIsLoggedIn] = useState(true);
 
     const selectHome = useCallback(() => {
         smoothScrollTop();
@@ -53,6 +60,12 @@ function App(props: Props): JSX.Element {
         setSelectedTab('Profile');
     }, [setSelectedTab]);
 
+    const selectDashBoard = useCallback(() => {
+        smoothScrollTop();
+        document.title = 'Dashboard | Ganttlet';
+        setSelectedTab('Dashboard');
+    }, [setSelectedTab]);
+
     const handleMobileDrawerOpen = useCallback(() => {
         setIsMobileDrawerOpen(true);
     }, [setIsMobileDrawerOpen]);
@@ -60,6 +73,15 @@ function App(props: Props): JSX.Element {
     const handleMobileDrawerClose = useCallback(() => {
         setIsMobileDrawerOpen(false);
     }, [setIsMobileDrawerOpen]);
+
+    const handleSideDrawerOpen = useCallback(() => {
+        setIsSideDrawerOpen(true);
+    }, [setIsSideDrawerOpen]);
+
+    const handleSideDrawerClose = useCallback(() => {
+        setIsSideDrawerOpen(false);
+    }, [setIsSideDrawerOpen]);
+
     return (
         <Router>
             <MuiThemeProvider theme={theme}>
@@ -67,20 +89,30 @@ function App(props: Props): JSX.Element {
                 <GlobalStyles />
                 <Suspense fallback={<Fragment />}>
                     <div className={classes.wrapper}>
-                        <NavBar
-                            selectedTab={selectedTab}
-                            selectTab={setSelectedTab}
-                            mobileDrawerOpen={isMobileDrawerOpen}
-                            handleMobileDrawerOpen={handleMobileDrawerOpen}
-                            handleMobileDrawerClose={handleMobileDrawerClose}
-                        />
-                        <Switch>
-                            <PropsRoute path="/dashboard" component={Dashboard} />
-                            <PropsRoute path="/login" component={Login} selectLogin={selectLogin} />
-                            <PropsRoute path="/register" component={Register} selectRegister={selectRegister} />
-                            <PropsRoute path="/profile" component={Profile} selectProfile={selectProfile} />
-                            <PropsRoute path="/" component={Home} selectHome={selectHome} />
-                        </Switch>
+                        <div className={classes.root}>
+                            <NavBar
+                                selectedTab={selectedTab}
+                                selectTab={setSelectedTab}
+                                mobileDrawerOpen={isMobileDrawerOpen}
+                                handleMobileDrawerOpen={handleMobileDrawerOpen}
+                                handleMobileDrawerClose={handleMobileDrawerClose}
+                                handleSideDrawerOpen={handleSideDrawerOpen}
+                                handleSideDrawerClose={handleSideDrawerClose}
+                                sideDrawerOpen={isSideDrawerOpen}
+                                loggedIn={isLoggedIn}
+                                setIsLoggedIn={setIsLoggedIn}
+                            />
+                            <Switch>
+                                <PropsRoute path="/login" component={Login} selectLogin={selectLogin} />
+                                <PropsRoute path="/register" component={Register} selectRegister={selectRegister} />
+                                <PropsRoute path="/profile" component={Profile} selectProfile={selectProfile} />
+                                {isLoggedIn ? (
+                                    <PropsRoute path="/" component={Dashboard} selectDashboard={selectDashBoard} />
+                                ) : (
+                                    <PropsRoute path="/" component={Home} selectHome={selectHome} />
+                                )}
+                            </Switch>
+                        </div>
                     </div>
                 </Suspense>
             </MuiThemeProvider>
