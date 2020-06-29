@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -12,7 +12,7 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
-import GoogleLogin from 'react-google-login';
+import * as firebase from 'firebase';
 
 function Copyright() {
     return (
@@ -48,22 +48,41 @@ const useStyles = makeStyles((theme) => ({
     submit: {
         margin: theme.spacing(3, 0, 2),
     },
+    googleBtn: {
+        width: '100%',
+        margin: '0 0 50px 0',
+        display: 'flex',
+        '& img': {
+            width: '16px',
+            height: '16px',
+            padding: 0,
+            margin: '0 5px',
+            'vertical-align': 'middle',
+        },
+    },
 }));
 
-export default function Login() {
+// Handle Google SignIn
+const provider = new firebase.auth.GoogleAuthProvider();
+function googleSignIn() {
+    firebase
+        .auth()
+        .signInWithPopup(provider)
+        .then((result) => {
+            if (result) {
+                const user = result.user;
+                console.log(user);
+                // To-do: handle what happen after (redirect, etc.)
+            }
+        })
+        .catch((error) => {
+            const errorCode = error.code;
+            console.log(errorCode);
+        });
+}
+
+export default function Login(): JSX.Element {
     const classes = useStyles();
-
-    const [name, setName] = useState('');
-
-    const [email, setEmail] = useState('');
-
-    const [imgUrl, setImgUrl] = useState('');
-
-    const responseGoogle = (response: any) => {
-        setName(response.profileObj.name);
-        setEmail(response.profileObj.email);
-        setImgUrl(response.profileObj.imageUrl);
-    };
 
     return (
         <Container component="main" maxWidth="xs" className={classes.container}>
@@ -103,19 +122,14 @@ export default function Login() {
                         Sign In
                     </Button>
 
-                    {/* Google Sign-in */}
-                    <GoogleLogin
-                        clientId="899650980216-qmoafq1r4g4l3i517pi0f4p25l4tsaki.apps.googleusercontent.com"
-                        buttonText="Login"
-                        onSuccess={responseGoogle}
-                        onFailure={responseGoogle}
-                        cookiePolicy={'single_host_origin'}
-                    />
-
-                    {/* DEBUGGING PURPOSES: Google Profile will be here */}
-                    <p>{name}</p>
-                    <p>{email}</p>
-                    <img src={imgUrl} alt={name} />
+                    {/*Google Sign in */}
+                    <Button onClick={googleSignIn} className={classes.googleBtn}>
+                        <img
+                            src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg"
+                            alt="logo"
+                        />
+                        Log In With Google
+                    </Button>
 
                     <Grid container>
                         <Grid item xs>
