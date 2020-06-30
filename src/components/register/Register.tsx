@@ -73,7 +73,8 @@ export default function Register(): JSX.Element {
 
     // This is redundant, but when I tried to use the FirebaseWrapper member function directly I got an error saying `this` is undefined
     const emailIsUnique = async (email: string) => {
-        return await !firebase.userAlreadyExists(email);
+        const isUnique = !(await firebase.userAlreadyExists(email));
+        return isUnique;
     };
     return (
         <Container component="main" maxWidth="xs" className={classes.container}>

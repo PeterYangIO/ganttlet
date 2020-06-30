@@ -110,8 +110,9 @@ class FirebaseWrapper {
     }
 
     async userAlreadyExists(email: string) {
-        const userWithEmailSnapshot = await this.db.ref('users').orderByChild('email').equalTo(email).once('value');
-        return userWithEmailSnapshot.exists();
+        const snapshotOfPotentialUser = await this.db.ref('users').orderByChild('email').equalTo(email).once('value');
+        const exists = await snapshotOfPotentialUser.exists();
+        return exists;
     }
 
     /* -------- */
