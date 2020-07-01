@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import React, { memo, SetStateAction, Dispatch } from 'react';
 import clsx from 'clsx';
 import { Link } from 'react-router-dom';
 
@@ -11,6 +11,7 @@ import RegisterIcon from '@material-ui/icons/ExitToApp';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import PersonIcon from '@material-ui/icons/Person';
+import firebase from '../Firebase/firebase';
 
 import NavigationDrawer from './NavigationDrawer';
 import SideDrawer from '../navigation/SideDrawer';
@@ -26,6 +27,7 @@ const styles = (theme: Theme) =>
                 easing: theme.transitions.easing.sharp,
                 duration: theme.transitions.duration.leavingScreen,
             }),
+            background: theme.palette.common.white,
         },
         appBarShift: {
             marginLeft: drawerWidth,
@@ -58,6 +60,15 @@ const styles = (theme: Theme) =>
         },
     });
 
+type Primitive = bigint | boolean | null | number | string | symbol | undefined;
+
+type JSONValue = Primitive | JSONObject | JSONArray;
+
+interface JSONObject {
+    [key: string]: JSONValue;
+}
+
+type JSONArray = Array<JSONValue>;
 interface Props extends WithStyles<typeof styles> {
     // non style props
     handleMobileDrawerOpen: VoidFunction;
@@ -66,8 +77,8 @@ interface Props extends WithStyles<typeof styles> {
     handleSideDrawerOpen: VoidFunction;
     handleSideDrawerClose: VoidFunction;
     sideDrawerOpen: boolean;
-    loggedIn: boolean;
-    setIsLoggedIn: { (isLoggedIn: boolean): void };
+    user: { loggedIn: boolean; email: string };
+    setUser: Dispatch<SetStateAction<{ loggedIn: boolean; email: string }>>;
     selectedTab: string;
     selectTab: { (selectedTab: string): void };
     // injected style props
@@ -81,8 +92,8 @@ function NavBar(props: Props): JSX.Element {
         handleSideDrawerOpen,
         handleSideDrawerClose,
         sideDrawerOpen,
-        loggedIn,
-        setIsLoggedIn,
+        user,
+        setUser,
         selectedTab,
     } = props;
 
@@ -110,18 +121,20 @@ function NavBar(props: Props): JSX.Element {
         console.log('ding dong notifications bell clicked');
     };
     const handleExitIconClick = () => {
-        setIsLoggedIn(false);
+        //setUser({ loggedIn: false, email: '' });
+        firebase.signOut();
+        // redirect to home?
     };
 
     return (
         <div>
             <AppBar
                 position="absolute"
-                className={clsx(classes.appBar, loggedIn && sideDrawerOpen && classes.appBarShift)}
+                className={clsx(classes.appBar, user.loggedIn && sideDrawerOpen && classes.appBarShift)}
             >
                 <Toolbar className={classes.toolbar}>
                     <div>
-                        {loggedIn && (
+                        {user.loggedIn && (
                             <IconButton
                                 edge="start"
                                 aria-label="open drawer"
@@ -131,18 +144,25 @@ function NavBar(props: Props): JSX.Element {
                                 <MenuIcon />
                             </IconButton>
                         )}
-                        <Typography variant="h4" className={classes.brandText} display="inline">
-                            Gantt
-                        </Typography>
-                        <Typography variant="h4" className={classes.brandText} display="inline" color="secondary">
-                            let
-                        </Typography>
+                        <Link key="home" to="/home" className={classes.noDecoration}>
+                            <Typography variant="h4" className={classes.brandText} display="inline">
+                                Gantt
+                            </Typography>
+                            <Typography variant="h4" className={classes.brandText} display="inline" color="primary">
+                                let
+                            </Typography>
+                        </Link>
                     </div>
+                    {/*
                     <div>
-                        <Button onClick={() => setIsLoggedIn(!loggedIn)}> Toggle Logged In</Button>
+                        <Button onClick={() => setUser({ loggedIn: !user.loggedIn, email: user.email })}>
+                            Toggle Logged In
+                        </Button>
                     </div>
+                    */}
+
                     <div>
-                        {loggedIn ? (
+                        {user.loggedIn ? (
                             <div>
                                 <Link key="profile" to="/profile" className={classes.noDecoration}>
                                     <IconButton color="inherit" onClick={handlePersonIconClick}>
@@ -196,7 +216,9 @@ function NavBar(props: Props): JSX.Element {
                     </div>
                 </Toolbar>
             </AppBar>
-            {loggedIn && <SideDrawer handleSideDrawerClose={handleSideDrawerClose} sideDrawerOpen={sideDrawerOpen} />}
+            {user.loggedIn && (
+                <SideDrawer handleSideDrawerClose={handleSideDrawerClose} sideDrawerOpen={sideDrawerOpen} />
+            )}
             <NavigationDrawer
                 menuItems={menuItems}
                 anchor="right"

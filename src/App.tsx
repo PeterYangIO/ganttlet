@@ -1,4 +1,4 @@
-import React, { Fragment, Suspense, memo, useState, useCallback } from 'react';
+import React, { Fragment, Suspense, memo, useState, useCallback, useEffect, Dispatch, SetStateAction } from 'react';
 import { MuiThemeProvider, CssBaseline } from '@material-ui/core';
 import theme from './assets/style/theme';
 import GlobalStyles from './assets/style/GlobalStyles';
@@ -6,7 +6,6 @@ import { BrowserRouter as Router, Switch } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { withStyles, WithStyles, createStyles, Theme } from '@material-ui/core/styles';
 import NavBar from './components/navigation/NavBar';
-import Footer from './components/footer/Footer';
 import Home from './components/home/Home';
 import Login from './components/login/Login';
 import Register from './components/register/Register';
@@ -14,6 +13,8 @@ import Dashboard from './components/dashboard/Dashboard';
 import PropsRoute from './utils/components/PropsRoute';
 import smoothScrollTop from './utils/functions/smoothScrollTop';
 import Profile from './components/profile/Profile';
+import firebase from './components/Firebase/firebase';
+
 const styles = (theme: Theme) =>
     createStyles({
         root: {
@@ -29,12 +30,29 @@ const styles = (theme: Theme) =>
 type Props = WithStyles<typeof styles>;
 
 function App(props: Props): JSX.Element {
-
     const { classes } = props;
     const [selectedTab, setSelectedTab] = useState('');
     const [isMobileDrawerOpen, setIsMobileDrawerOpen] = useState(false);
     const [isSideDrawerOpen, setIsSideDrawerOpen] = useState(false);
-    const [isLoggedIn, setIsLoggedIn] = useState(true);
+    const [user, setUser] = useState({ loggedIn: false, email: '' });
+
+    useEffect(() => {
+        const unsubscribe = onAuthStateChange(setUser);
+        return () => {
+            unsubscribe();
+        };
+    }, []);
+
+    // updates user hook when firebase auth status changes
+    function onAuthStateChange(callback: Dispatch<SetStateAction<{ loggedIn: boolean; email: string }>>) {
+        return firebase.auth.onAuthStateChanged((user) => {
+            if (user) {
+                callback({ loggedIn: true, email: user.email ? user.email : '' });
+            } else {
+                callback({ loggedIn: false, email: '' });
+            }
+        });
+    }
 
     const selectHome = useCallback(() => {
         smoothScrollTop();
@@ -99,19 +117,25 @@ function App(props: Props): JSX.Element {
                                 handleSideDrawerOpen={handleSideDrawerOpen}
                                 handleSideDrawerClose={handleSideDrawerClose}
                                 sideDrawerOpen={isSideDrawerOpen}
-                                loggedIn={isLoggedIn}
-                                setIsLoggedIn={setIsLoggedIn}
+                                user={user}
+                                setUser={setUser}
                             />
-                            <Switch>
-                                <PropsRoute path="/login" component={Login} selectLogin={selectLogin} />
-                                <PropsRoute path="/register" component={Register} selectRegister={selectRegister} />
-                                <PropsRoute path="/profile" component={Profile} selectProfile={selectProfile} />
-                                {isLoggedIn ? (
+                            {user.loggedIn ? (
+                                //routes that users can go to if they are logged in
+                                <Switch>
+                                    <PropsRoute path="/home" component={Home} selectHome={selectHome} />
+                                    <PropsRoute path="/profile" component={Profile} selectProfile={selectProfile} />
                                     <PropsRoute path="/" component={Dashboard} selectDashboard={selectDashBoard} />
-                                ) : (
+                                </Switch>
+                            ) : (
+                                //routes that users can go to if they are not logged in
+
+                                <Switch>
+                                    <PropsRoute path="/login" component={Login} selectLogin={selectLogin} />
+                                    <PropsRoute path="/register" component={Register} selectRegister={selectRegister} />
                                     <PropsRoute path="/" component={Home} selectHome={selectHome} />
-                                )}
-                            </Switch>
+                                </Switch>
+                            )}
                         </div>
                     </div>
                 </Suspense>
