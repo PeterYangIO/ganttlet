@@ -28,7 +28,10 @@ const styles = (theme: Theme) =>
     });
 
 type Props = WithStyles<typeof styles>;
-
+interface IUser {
+    loggedIn: boolean;
+    email: string;
+}
 function App(props: Props): JSX.Element {
     const { classes } = props;
     const [selectedTab, setSelectedTab] = useState('');
@@ -41,10 +44,10 @@ function App(props: Props): JSX.Element {
         return () => {
             unsubscribe();
         };
-    }, []);
+    }, [setUser]);
 
     // updates user hook when firebase auth status changes
-    function onAuthStateChange(callback: Dispatch<SetStateAction<{ loggedIn: boolean; email: string }>>) {
+    function onAuthStateChange(callback: Dispatch<SetStateAction<IUser>>) {
         return firebase.auth.onAuthStateChanged((user) => {
             if (user) {
                 callback({ loggedIn: true, email: user.email ? user.email : '' });
