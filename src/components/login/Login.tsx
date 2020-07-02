@@ -1,4 +1,5 @@
 import React, { useContext } from 'react';
+import { Link } from 'react-router-dom';
 
 import {
     Avatar,
@@ -7,7 +8,6 @@ import {
     TextField,
     FormControlLabel,
     Checkbox,
-    Link,
     Grid,
     Box,
     Typography,
@@ -23,7 +23,7 @@ function Copyright() {
     return (
         <Typography variant="body2" color="textSecondary" align="center">
             {'Copyright © '}
-            <Link color="inherit" href="https://material-ui.com/">
+            <Link color="inherit" to="https://material-ui.com/">
                 Your Website
             </Link>{' '}
             {new Date().getFullYear()}
@@ -56,7 +56,7 @@ const useStyles = makeStyles((theme) => ({
     appBarSpacer: theme.mixins.toolbar,
     googleBtn: {
         width: '100%',
-        margin: '0 0 50px 0',
+        margin: '0 0 48px 0',
         display: 'flex',
         '& img': {
             width: '16px',
@@ -136,14 +136,10 @@ export default function Login(): JSX.Element {
                     </Button>
                     <Grid container>
                         <Grid item xs>
-                            <Link href="#" variant="body2">
-                                Forgot password?
-                            </Link>
+                            <Link to="#">Forgot password?</Link>
                         </Grid>
                         <Grid item>
-                            <Link href="/register" variant="body2">
-                                {"Don't have an account? Sign Up"}
-                            </Link>
+                            <Link to="/register">Don&apos;t have an account? Sign Up</Link>
                         </Grid>
                     </Grid>
                 </form>
