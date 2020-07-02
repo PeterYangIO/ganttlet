@@ -19,7 +19,7 @@ import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import { mainListItems, secondaryListItems } from './listItems';
 import Table from './Table';
-import Projects from './Projects.js';
+import Projects from './Projects';
 
 function Copyright() {
     return (
@@ -122,7 +122,7 @@ export default function Dashboard() {
         setOpen(false);
     };
 
-    let Proj = [
+    const Proj = [
             {
                 name: "Project1",
                 description: "Describe Project1"
@@ -200,7 +200,7 @@ export default function Dashboard() {
                         </Grid>
                         {Proj.map(p => (
                             <Grid item xs={3}>
-                                <Projects p = {p} />
+                                <Projects Projects = {p} />
                             </Grid>
                         ))}
                     </Grid>

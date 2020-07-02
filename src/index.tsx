@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import App from './components/dashboard/Dashboard.js';
+import App from './components/dashboard/Dashboard';
 import * as serviceWorker from './serviceWorker';
 
 ReactDOM.render(
