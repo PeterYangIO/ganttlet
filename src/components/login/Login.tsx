@@ -12,6 +12,7 @@ import {
     Box,
     Typography,
     Container,
+    Link as MuiLink,
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
@@ -23,8 +24,8 @@ function Copyright() {
     return (
         <Typography variant="body2" color="textSecondary" align="center">
             {'Copyright © '}
-            <Link color="inherit" to="https://material-ui.com/">
-                Your Website
+            <Link to="https://material-ui.com/">
+                <MuiLink color="inherit">Your Website</MuiLink>
             </Link>{' '}
             {new Date().getFullYear()}
             {'.'}
@@ -136,10 +137,16 @@ export default function Login(): JSX.Element {
                     </Button>
                     <Grid container>
                         <Grid item xs>
-                            <Link to="#">Forgot password?</Link>
+                            <Link to="#">
+                                <MuiLink href="#" variant="body2">
+                                    Forgot password?
+                                </MuiLink>
+                            </Link>
                         </Grid>
                         <Grid item>
-                            <Link to="/register">Don&apos;t have an account? Sign Up</Link>
+                            <Link to="/register">
+                                <MuiLink variant="body2">Don&apos;t have an account? Sign Up</MuiLink>
+                            </Link>
                         </Grid>
                     </Grid>
                 </form>

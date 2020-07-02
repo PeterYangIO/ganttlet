@@ -60,15 +60,13 @@ const styles = (theme: Theme) =>
         },
     });
 
-type Primitive = bigint | boolean | null | number | string | symbol | undefined;
+type Json = string | number | boolean | null | { [property: string]: Json } | Json[];
 
-type JSONValue = Primitive | JSONObject | JSONArray;
-
-interface JSONObject {
-    [key: string]: JSONValue;
+interface IUser {
+    loggedIn: boolean;
+    email: string;
 }
 
-type JSONArray = Array<JSONValue>;
 interface Props extends WithStyles<typeof styles> {
     // non style props
     handleMobileDrawerOpen: VoidFunction;
@@ -78,7 +76,7 @@ interface Props extends WithStyles<typeof styles> {
     handleSideDrawerClose: VoidFunction;
     sideDrawerOpen: boolean;
     user: { loggedIn: boolean; email: string };
-    setUser: Dispatch<SetStateAction<{ loggedIn: boolean; email: string }>>;
+    setUser: Dispatch<SetStateAction<IUser>>;
     selectedTab: string;
     selectTab: { (selectedTab: string): void };
     // injected style props
@@ -93,7 +91,6 @@ function NavBar(props: Props): JSX.Element {
         handleSideDrawerClose,
         sideDrawerOpen,
         user,
-        setUser,
         selectedTab,
     } = props;
 

@@ -37,7 +37,7 @@ class FirebaseWrapper {
         this.auth = app.auth();
         this.db = app.database();
 
-        this.auth.onAuthStateChanged((user) => {
+        this.auth.onAuthStateChanged(() => {
             //this.loggedIn = Boolean(user);
             return app.auth().onAuthStateChanged((user) => {
                 if (user) {

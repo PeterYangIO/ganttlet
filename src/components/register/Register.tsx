@@ -1,16 +1,15 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import {
     Avatar,
     Button,
     CssBaseline,
     TextField,
-    FormControlLabel,
-    Checkbox,
-    Link,
     Grid,
     Box,
     Typography,
     Container,
+    Link as MuiLink,
 } from '@material-ui/core';
 import { useForm } from 'react-hook-form';
 
@@ -24,8 +23,8 @@ function Copyright() {
     return (
         <Typography variant="body2" color="textSecondary" align="center">
             {'Copyright © '}
-            <Link color="inherit" href="https://material-ui.com/">
-                Your Website
+            <Link to="https://material-ui.com/">
+                <MuiLink color="inherit">Your Website</MuiLink>
             </Link>{' '}
             {new Date().getFullYear()}
             {'.'}
@@ -57,7 +56,7 @@ const useStyles = makeStyles((theme) => ({
     appBarSpacer: theme.mixins.toolbar,
     googleBtn: {
         width: '100%',
-        margin: '0 0 50px 0',
+        margin: '0 0 48px 0',
         display: 'flex',
         '& img': {
             width: '16px',
@@ -181,8 +180,8 @@ export default function Register(): JSX.Element {
                     </Button>
                     <Grid container justify="flex-end">
                         <Grid item>
-                            <Link href="/login" variant="body2">
-                                Already have an account? Sign in
+                            <Link to="/login">
+                                <MuiLink variant="body2">Already have an account? Sign in</MuiLink>
                             </Link>
                         </Grid>
                     </Grid>
