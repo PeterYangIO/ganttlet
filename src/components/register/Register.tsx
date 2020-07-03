@@ -1,16 +1,15 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import {
     Avatar,
     Button,
     CssBaseline,
     TextField,
-    FormControlLabel,
-    Checkbox,
-    Link,
     Grid,
     Box,
     Typography,
     Container,
+    Link as MuiLink,
 } from '@material-ui/core';
 import { useForm } from 'react-hook-form';
 
@@ -24,8 +23,8 @@ function Copyright() {
     return (
         <Typography variant="body2" color="textSecondary" align="center">
             {'Copyright © '}
-            <Link color="inherit" href="https://material-ui.com/">
-                Your Website
+            <Link to="https://material-ui.com/">
+                <MuiLink color="inherit">Your Website</MuiLink>
             </Link>{' '}
             {new Date().getFullYear()}
             {'.'}
@@ -55,6 +54,18 @@ const useStyles = makeStyles((theme) => ({
         margin: theme.spacing(3, 0, 2),
     },
     appBarSpacer: theme.mixins.toolbar,
+    googleBtn: {
+        width: '100%',
+        margin: '0 0 48px 0',
+        display: 'flex',
+        '& img': {
+            width: '16px',
+            height: '16px',
+            padding: 0,
+            margin: '0 5px',
+            'vertical-align': 'middle',
+        },
+    },
 }));
 
 interface RegisterFormObject {
@@ -147,20 +158,30 @@ export default function Register(): JSX.Element {
                             />
                             {errors.password && <ErrorDisplay type={errors.password.type} />}
                         </Grid>
+                        {/*
                         <Grid item xs={12}>
                             <FormControlLabel
                                 control={<Checkbox value="allowExtraEmails" color="primary" />}
                                 label="I want to receive inspiration, marketing promotions and updates via email."
                             />
-                        </Grid>
+                            </Grid>
+                            */}
                     </Grid>
                     <Button type="submit" fullWidth variant="contained" color="primary" className={classes.submit}>
                         Sign Up
                     </Button>
+                    {/*Google Sign in */}
+                    <Button onClick={firebase.googleSignIn} className={classes.googleBtn}>
+                        <img
+                            src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg"
+                            alt="logo"
+                        />
+                        Sign Up With Google
+                    </Button>
                     <Grid container justify="flex-end">
                         <Grid item>
-                            <Link href="/signin" variant="body2">
-                                Already have an account? Sign in
+                            <Link to="/login">
+                                <MuiLink variant="body2">Already have an account? Sign in</MuiLink>
                             </Link>
                         </Grid>
                     </Grid>

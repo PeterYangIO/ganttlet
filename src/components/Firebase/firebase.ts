@@ -37,8 +37,15 @@ class FirebaseWrapper {
         this.auth = app.auth();
         this.db = app.database();
 
-        this.auth.onAuthStateChanged((user) => {
-            this.loggedIn = Boolean(user);
+        this.auth.onAuthStateChanged(() => {
+            //this.loggedIn = Boolean(user);
+            return app.auth().onAuthStateChanged((user) => {
+                if (user) {
+                    console.log('The user is logged in');
+                } else {
+                    console.log('The user is not logged in');
+                }
+            });
         });
 
         this.loggedIn = false;

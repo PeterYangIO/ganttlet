@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useContext } from 'react';
+import { Link } from 'react-router-dom';
 
 import {
     Avatar,
@@ -7,22 +8,24 @@ import {
     TextField,
     FormControlLabel,
     Checkbox,
-    Link,
     Grid,
     Box,
     Typography,
     Container,
+    Link as MuiLink,
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import firebase from '../Firebase/firebase';
+import { useFormContext, useForm } from 'react-hook-form';
+import ErrorDisplay from '../shared/ErrorDisplay';
 
 function Copyright() {
     return (
         <Typography variant="body2" color="textSecondary" align="center">
             {'Copyright © '}
-            <Link color="inherit" href="https://material-ui.com/">
-                Your Website
+            <Link to="https://material-ui.com/">
+                <MuiLink color="inherit">Your Website</MuiLink>
             </Link>{' '}
             {new Date().getFullYear()}
             {'.'}
@@ -54,7 +57,7 @@ const useStyles = makeStyles((theme) => ({
     appBarSpacer: theme.mixins.toolbar,
     googleBtn: {
         width: '100%',
-        margin: '0 0 50px 0',
+        margin: '0 0 48px 0',
         display: 'flex',
         '& img': {
             width: '16px',
@@ -66,8 +69,18 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
+interface LoginFormObject {
+    email: string;
+    password: string;
+}
+
 export default function Login(): JSX.Element {
     const classes = useStyles();
+    const { register, handleSubmit, errors } = useForm<LoginFormObject>();
+
+    const onSubmit = (data: LoginFormObject) => {
+        firebase.signIn(data.email, data.password);
+    };
 
     return (
         <Container component="main" maxWidth="xs" className={classes.container}>
@@ -80,7 +93,7 @@ export default function Login(): JSX.Element {
                 <Typography component="h1" variant="h5">
                     Sign in
                 </Typography>
-                <form className={classes.form} noValidate>
+                <form onSubmit={handleSubmit(onSubmit)} className={classes.form} noValidate>
                     <TextField
                         variant="outlined"
                         margin="normal"
@@ -91,7 +104,12 @@ export default function Login(): JSX.Element {
                         name="email"
                         autoComplete="email"
                         autoFocus
+                        inputRef={register({
+                            required: true,
+                            maxLength: 256,
+                        })}
                     />
+                    {errors.email && <ErrorDisplay type={errors.email.type} />}
                     <TextField
                         variant="outlined"
                         margin="normal"
@@ -102,12 +120,13 @@ export default function Login(): JSX.Element {
                         type="password"
                         id="password"
                         autoComplete="current-password"
+                        inputRef={register({ required: true, minLength: 12 })}
                     />
+                    {errors.password && <ErrorDisplay type={errors.password.type} />}
                     <FormControlLabel control={<Checkbox value="remember" color="primary" />} label="Remember me" />
                     <Button type="submit" fullWidth variant="contained" color="primary" className={classes.submit}>
                         Sign In
                     </Button>
-
                     {/*Google Sign in */}
                     <Button onClick={firebase.googleSignIn} className={classes.googleBtn}>
                         <img
@@ -116,16 +135,17 @@ export default function Login(): JSX.Element {
                         />
                         Log In With Google
                     </Button>
-
                     <Grid container>
                         <Grid item xs>
-                            <Link href="#" variant="body2">
-                                Forgot password?
+                            <Link to="#">
+                                <MuiLink href="#" variant="body2">
+                                    Forgot password?
+                                </MuiLink>
                             </Link>
                         </Grid>
                         <Grid item>
-                            <Link href="signup" variant="body2">
-                                {"Don't have an account? Sign Up"}
+                            <Link to="/register">
+                                <MuiLink variant="body2">Don&apos;t have an account? Sign Up</MuiLink>
                             </Link>
                         </Grid>
                     </Grid>
